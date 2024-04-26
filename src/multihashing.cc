@@ -115,17 +115,27 @@ const char* ToCString(const Nan::Utf8String& value) {
 
 DECLARE_FUNC(ghostrider) {
   // Check Arguments for Errors
-  if (info.Length() < 1)
-    return THROW_ERROR_EXCEPTION("You must provide one argument.");
+    if (info.Length() < 1)
+        return THROW_ERROR_EXCEPTION("You must provide one argument.");
+
+    Local<Object> target = Nan::To<Object>(info[0]).ToLocalChecked();
+
+    if(!Buffer::HasInstance(target))
+        RETURN_EXCEPT("Argument should be a buffer object.");
+
+    char * input = Buffer::Data(target);
+    uint32_t input_len = Buffer::Length(target);
+    char output[32];
 
   // Process/Define Passed Parameters
-  char * input = Buffer::Data(Nan::To<v8::Object>(info[0]).ToLocalChecked());
-  uint32_t input_len = Buffer::Length(Nan::To<v8::Object>(info[0]).ToLocalChecked());
-  char output[32];
+  //char * input = Buffer::Data(Nan::To<v8::Object>(info[0]).ToLocalChecked());
+  //uint32_t input_len = Buffer::Length(Nan::To<v8::Object>(info[0]).ToLocalChecked());
+  //char output[32];
 
   // Hash Input Data and Return Output
-  ghostrider_hash(input, output, input_len);
-  info.GetReturnValue().Set(Nan::CopyBuffer(output, 32).ToLocalChecked());
+    ghostrider_hash(input, output, input_len);
+    //info.GetReturnValue().Set(Nan::CopyBuffer(output, 32).ToLocalChecked());
+    SET_BUFFER_RETURN(output, 32);
 }
 
 DECLARE_FUNC(argon2d) {
