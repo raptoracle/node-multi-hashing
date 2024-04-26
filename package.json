@@ -50,5 +50,8 @@
             "@semantic-release/changelog",
             "@semantic-release/git"
         ]
+    },
+    "engines": {
+        "node": ">=12.16"
     }
 }

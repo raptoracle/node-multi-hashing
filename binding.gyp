@@ -8,8 +8,8 @@
                 "src/blake.c",
                 "src/boolberry.cc",
                 "src/c11.c",
-                "src/cryptonight.c",
-				"src/cryptonight_fast.c",
+                #"src/cryptonight.c",
+				#"src/cryptonight_fast.c",
                 "src/fresh.c",
                 "src/fugue.c",
                 "src/groestl.c",
@@ -38,6 +38,14 @@
                 "src/crypto/argon2/opt.c",
                 "src/crypto/argon2/thread.c",
                 "src/crypto/argon2/blake2/blake2b.c",
+                "src/crypto/cryptonote/cryptonight_dark_lite.c",
+                "src/crypto/cryptonote/cryptonight_dark.c",
+                "src/crypto/cryptonote/cryptonight_fast.c",
+                "src/crypto/cryptonote/cryptonight_lite.c",
+                "src/crypto/cryptonote/cryptonight_soft_shell.c",
+                "src/crypto/cryptonote/cryptonight_turtle_lite.c",
+                "src/crypto/cryptonote/cryptonight_turtle.c",
+                "src/crypto/cryptonote/cryptonight.c",
                 "src/sha3/sph_hefty1.c",
                 "src/sha3/sph_fugue.c",
                 "src/sha3/aes_helper.c",
@@ -75,14 +83,32 @@
                 "src/neoscrypt.c",
                 "src/crypto/yescrypt/yescrypt-best.c",
                 "src/crypto/yescrypt/yescryptcommon.c",
+                "src/ghostrider/ghostrider.c",
+                "src/ghostrider/utils/aes_helper.c",
+                "src/ghostrider/utils/extra.c",
+                "src/ghostrider/utils/gost_streebog.c",
+                "src/ghostrider/utils/sph_haval.c"
             ],
             "include_dirs": [
                 "src/crypto",
                 "<!(node -e \"require('nan')\")"
             ],
             "cflags_cc": [
-                "-std=c++14"
+                "-std=c++0x",
+                "-fPIC",
+                "-fexceptions"
             ],
+            "defines": [
+                "HAVE_DECL_STRNLEN=1",
+                "HAVE_BYTESWAP_H=1"
+            ],
+            'conditions': [
+                ['OS=="mac"', {
+                    'xcode_settings': {
+                        'GCC_ENABLE_CPP_EXCEPTIONS': 'YES'
+                    }
+                }]
+            ]
         }
     ]
 }

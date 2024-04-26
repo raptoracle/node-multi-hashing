@@ -2,14 +2,15 @@
 #include <node_buffer.h>
 #include <v8.h>
 #include <stdint.h>
+#include <iostream>
 #include <nan.h>
 
 extern "C" {
     #include "bcrypt.h"
     #include "blake.h"
     #include "c11.h"
-    #include "cryptonight.h"
-    #include "cryptonight_fast.h"
+    #include "crypto/cryptonote/cryptonight.h"
+    #include "crypto/cryptonote/cryptonight_fast.h"
     #include "fresh.h"
     #include "fugue.h"
     #include "groestl.h"
@@ -37,6 +38,7 @@ extern "C" {
     #include "neoscrypt.h"
     #include "crypto/argon2/argon2.h"
     #include "crypto/yescrypt/yescrypt.h"
+    #include "ghostrider/ghostrider.h"
 }
 
 #include "boolberry.h"
@@ -44,6 +46,11 @@ extern "C" {
 using namespace node;
 using namespace Nan;
 using namespace v8;
+
+#define THROW_ERROR_EXCEPTION(x) Nan::ThrowError(x)
+const char* ToCString(const Nan::Utf8String& value) {
+  return *value ? *value : "<string conversion failed>";
+}
 
 #define SET_BUFFER_RETURN(x, len) \
     info.GetReturnValue().Set(Nan::CopyBuffer(x, len).ToLocalChecked());
@@ -105,6 +112,21 @@ using namespace v8;
  DECLARE_CALLBACK(x16r, x16r_hash, 32);
  DECLARE_CALLBACK(x16rv2, x16rv2_hash, 32);
  DECLARE_CALLBACK(yescrypt, yescrypt_hash, 32);
+
+DECLARE_FUNC(ghostrider) {
+  // Check Arguments for Errors
+  if (info.Length() < 1)
+    return THROW_ERROR_EXCEPTION("You must provide one argument.");
+
+  // Process/Define Passed Parameters
+  char * input = Buffer::Data(Nan::To<v8::Object>(info[0]).ToLocalChecked());
+  uint32_t input_len = Buffer::Length(Nan::To<v8::Object>(info[0]).ToLocalChecked());
+  char output[32];
+
+  // Hash Input Data and Return Output
+  ghostrider_hash(input, output, input_len);
+  info.GetReturnValue().Set(Nan::CopyBuffer(output, 32).ToLocalChecked());
+}
 
 DECLARE_FUNC(argon2d) {
     if (info.Length() < 4)
@@ -312,7 +334,8 @@ DECLARE_FUNC(cryptonight) {
     else {
         if ((cn_variant == 1) && input_len < 43)
             RETURN_EXCEPT("Argument must be 43 bytes for monero variant 1");
-        cryptonight_hash(input, output, input_len, cn_variant, height);
+        //cryptonight_hash(input, output, input_len, cn_variant, height);
+        cryptonight_hash(input, output, input_len, cn_variant);
     }
     SET_BUFFER_RETURN(output, 32);
 }
@@ -396,6 +419,7 @@ NAN_MODULE_INIT(init) {
     NAN_EXPORT(target, cryptonightfast);
     NAN_EXPORT(target, fresh);
     NAN_EXPORT(target, fugue);
+    NAN_EXPORT(target, ghostrider);
     NAN_EXPORT(target, groestl);
     NAN_EXPORT(target, groestlmyriad);
     NAN_EXPORT(target, hefty1);

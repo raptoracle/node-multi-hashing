@@ -1,0 +1,25 @@
+{
+    "files.associations": {
+        "sph_blake.h": "c",
+        "sph_jh.h": "c",
+        "cryptonight_dark_lite.h": "c",
+        "cryptonight_dark.h": "c",
+        "sph_groestl.h": "c",
+        "sph_bmw.h": "c",
+        "sph_haval.h": "c",
+        "sph_tiger.h": "c",
+        "sph_keccak.h": "c",
+        "sph_skein.h": "c",
+        "sph_luffa.h": "c",
+        "sph_cubehash.h": "c",
+        "sph_shavite.h": "c",
+        "sph_simd.h": "c",
+        "sph_echo.h": "c",
+        "sph_hamsi.h": "c",
+        "sph_fugue.h": "c",
+        "sph_shabal.h": "c",
+        "sph_whirlpool.h": "c",
+        "cryptonight_soft_shell.h": "c",
+        "cryptonight_fast.h": "c"
+    }
+}
