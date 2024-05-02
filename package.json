@@ -1,6 +1,6 @@
 {
-    "name": "multi-hashing",
-    "version": "1.0.2",
+    "name": "node-multi-hashing",
+    "version": "1.0.3",
     "main": "index.js",
     "author": {
         "name": "Matthew Little",
@@ -24,6 +24,7 @@
         "scryptjane",
         "script-n",
         "x11",
+        "ghostrider",
         "quark",
         "keccak_hash",
         "skein",
