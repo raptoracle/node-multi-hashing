@@ -94,7 +94,8 @@
                 "<!(node -e \"require('nan')\")"
             ],
             "cflags_cc": [
-                "-std=c++0x",
+                #"-std=c++0x",
+                "-std=c++17",
                 "-fPIC",
                 "-fexceptions"
             ],
